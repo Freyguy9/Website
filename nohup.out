@@ -1,0 +1,40 @@
+
+> blogger@0.0.0 start /home/bitnami/blogger
+> node ./bin/www
+
+[0mGET / [36m304 [0m11.781 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m1.727 ms - -[0m
+[0mGET /list [36m304 [0m1.404 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.363 ms - -[0m
+[0mGET /add [36m304 [0m0.932 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.250 ms - -[0m
+[0mGET / [36m304 [0m0.838 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.308 ms - -[0m
+[0mGET /list [36m304 [0m0.911 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.223 ms - -[0m
+[0mGET /add [36m304 [0m0.840 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.309 ms - -[0m
+[0mGET / [36m304 [0m0.648 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.226 ms - -[0m
+[0mGET /list [36m304 [0m0.649 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.301 ms - -[0m
+[0mGET /add [36m304 [0m0.667 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.298 ms - -[0m
+[0mGET /list [36m304 [0m0.646 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.318 ms - -[0m
+[0mGET / [36m304 [0m0.679 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.301 ms - -[0m
+[0mGET /add [36m304 [0m0.670 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.301 ms - -[0m
+[0mGET /list [36m304 [0m0.656 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.228 ms - -[0m
+[0mGET / [36m304 [0m0.646 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.310 ms - -[0m
+[0mGET / [36m304 [0m0.635 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.275 ms - -[0m
+[0mGET /list [36m304 [0m0.642 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.247 ms - -[0m
+[0mGET /add [36m304 [0m0.644 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.219 ms - -[0m
+[0mGET / [36m304 [0m0.645 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.242 ms - -[0m

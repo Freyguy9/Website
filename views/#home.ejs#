@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='../'/>
+  </head>
+  <body>
+    <ul>
+      <li><a href="/home">My Blog</a></li>
+      <li><a href="/blogList">List Blogs</a></li>
+      <li><a href="/blogAdd">Add Blogs</a></li>
+    </ul>
+    <h1><%= title %></h1>
+    <p>Welcome to my blog site :)</p>
+  </body>
+</html>
