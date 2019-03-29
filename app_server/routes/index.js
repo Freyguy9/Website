@@ -9,7 +9,10 @@ var deleteEntry = require('../controllers/blog.js');
 router.get('/', ctrlHome.home);
 router.get('/list',ctrlList.list);
 router.get('/add',ctrlList.add);
-router.get('/edit',editEntry.edit);
-router.get('/remove',deleteEntry.remove);
+router.get('/edit/:blogid',editEntry.edit);
+router.post('/edit/:blogid', editEntry.editBlog);
+router.get('/remove/:blogid',deleteEntry.remove);
+router.post('/add', ctrlList.addBlog);
+router.post('/remove/:blogid', deleteEntry.removeBlog);
 
 module.exports = router;
