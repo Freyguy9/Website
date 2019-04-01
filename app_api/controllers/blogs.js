@@ -43,9 +43,6 @@ var buildBlogList = function(req, res, results) {
 
 //********************************************************************************
 
-module.exports.blogCreate = function (req, res) {
-    sendJSONresponse(res, 200, {"status" : "success"});
-}
 /* POST a new blog */
 /* /api/blogs */
 module.exports.blogCreate = function(req, res) {
