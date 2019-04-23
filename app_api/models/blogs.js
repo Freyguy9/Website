@@ -8,4 +8,4 @@ var blogSchema = new mongoose.Schema({
     }
 });
 
-mongoose.model('blog', blogSchema)
+mongoose.model('blog', blogSchema);
