@@ -35,7 +35,10 @@ var buildBlogList = function(req, res, results) {
 	blogs.push({
 	    blogtitle: obj.blogtitle,
 	    blogtext: obj.blogtext,
-	    _id: obj._id
+	    _id: obj._id,
+	    userName:obj.userName,
+	    userEmail:obj.userEmail,
+	    createdon: obj.createdon
 	});
     });
     return blogs;
@@ -50,7 +53,9 @@ module.exports.blogCreate = function(req, res) {
   Blog
 	.create({
 	    blogtitle: req.body.blogtitle,
-	    blogtext: req.body.blogtext
+	    blogtext: req.body.blogtext,
+	    userName: req.body.userName,
+	    userEmail: req.body.userEmail
 	}, function(err, blog) {
 	    if (err) {
 		console.log(err);
