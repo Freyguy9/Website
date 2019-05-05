@@ -84,12 +84,12 @@ app.config(function($routeProvider) {
 	    controller: 'addController',
             controllerAs: 'vm'
 	})
-        .when('/edit/:blogid', {
-	    templateUrl: 'edit.html',
-	    controller: 'editController',
+        .when('/game/:tictacid', {
+	    templateUrl: 'game.html',
+	    controller: 'gameController',
             controllerAs: 'vm'
 	})
-	.when('/remove/:blogid', {
+	.when('/remove/:tictacid', {
 	    templateUrl: 'remove.html',
 	    controller: 'removeController',
 	    controllerAs: 'vm'
@@ -110,64 +110,169 @@ app.config(function($routeProvider) {
 //*** Controllers ***
 app.controller('homeController', function homeController() {
     var vm = this;
-    vm.homeHeader = "Eric Frey's Blog Site";
-    vm.homeText = "Welcome to my blog site";
+    vm.homeHeader = "Eric Frey's Tic Tac Toe Extravaganza";
+    vm.homeText = "Sign in to start playing with a friend!";
+    vm.submit = function(){
+	console.log("Do stuff");
+	
+    }
 });
 
 app.controller('listController', [ '$http', 'authentication', function listController($http, authentication) {
     var vm = this;
-    vm.listHeader = "Blog List";
+    vm.listHeader = "Game List";
 
     vm.isLoggedIn = function(){
 	return authentication.isLoggedIn();
     }
-    vm.isAuthor = function(blog) {
-	return vm.isLoggedIn() && authentication.currentUser().email == blog.userEmail;
+    vm.isAuthor = function(game) {
+	return vm.isLoggedIn() && authentication.currentUser().name == game.xUser;
     }
     getAllBlogs($http)
 	.success(function(data) {
-	    vm.blogs = data;
+	    vm.games = data;
 	})
 }]);
 
-app.controller('editController', [ '$http', '$routeParams', '$location', 'authentication', function editController($http, $routeParams, $location, authentication){
+app.controller('gameController', [ '$http','$routeParams','$interval', '$location', 'authentication', function gameController($http, $routeParams, $interval, $location, authentication){
     var vm = this;
-    var id = $routeParams.blogid;
+    var id = $routeParams.tictacid;
 
     vm.isLoggedIn = function() {
 	return authentication.isLoggedIn();
     }
-    
-    getBlogByID($http, id)                                                        
+    getTicTacByID($http, id)                                                        
 	.success(function(data) {
             console.log("success");
-            vm.blog = data;                                                             
+            vm.game = data;                                                             
 	})
-    vm.submit = function() {
-        var data = vm.blog;                                                              
-        data.blogtitle = userForm.blogtitle.value;                                       
-        data.blogtext = userForm.blogtext.value;                                         
-        updateBlog($http, data, id, authentication)
+    vm.getUserEmail = function() {
+	return authentication.currentUser().email;
+    }
+    vm.isUserTurn = function() {
+	return vm.game.userTurn == authentication.currentUser().email;
+    }
+    vm.joinGame = function() {
+	var data = vm.game;
+	data.oUser = authentication.currentUser().name;
+	data.oUserEmail = authentication.currentUser().email;
+
+	if (data.userTurn == ""){
+	    console.log("nextTurn");
+	    data.userTurn = data.oUserEmail;
+	}
+	vm.game = data;
+	updateTicTac($http, data, id, authentication)
             .success(function(data) {
                 console.log("UPDATED");
-		$location.path('/list').replace();
-            })                                                                           
+            })
+    }
+    vm.clickedOn = function(cell) {
+        var data = vm.game;
+	if (data.winner == ''){
+	var userSide = "";
+	
+	if (data.xUserEmail == authentication.currentUser().email){
+	    userSide = "X";
+	}else{
+	    userSide = "O";
+        }
+	
+	
+	//Fill cell value
+	switch(cell){
+	case '1':
+	    data.cell1 = userSide;
+	    break;
+	case '2':
+	    data.cell2 = userSide;
+	    break;
+	case '3':
+	    data.cell3 = userSide;
+	    break;
+	case '4':
+	    data.cell4 = userSide;
+	    break;
+	case '5':
+	    data.cell5=userSide;
+	    break;
+	case '6':
+	    data.cell6=userSide;
+	    break;
+	case '7':
+	    data.cell7=userSide;
+	    break;
+	case '8':
+	    data.cell8=userSide;
+	    break;
+	case '9':
+	    data.cell9=userSide;
+	    break;
+	}
+	
+	//Check for win
+	if (data.cell1==userSide && data.cell2==userSide && data.cell3==userSide){
+	    data.winner = authentication.currentUser().email;
+	}else if (data.cell4==userSide && data.cell5==userSide && data.cell6==userSide){
+	    data.winner=authentication.currentUser().email;
+	}else if (data.cell7==userSide && data.cell8==userSide && data.cell9==userSide){
+	    data.winner=authentication.currentUser().email;
+	}else if (data.cell1==userSide && data.cell4==userSide && data.cell7==userSide){
+	    data.winner=authentication.currentUser().email;
+	}else if (data.cell2==userSide && data.cell5==userSide && data.cell8==userSide){
+	    data.winner=authentication.currentUser().email;
+	}else if (data.cell3==userSide && data.cell6==userSide && data.cell9==userSide){
+	    data.winner=authentication.currentUser().email;
+	}else if (data.cell1==userSide && data.cell5==userSide && data.cell9==userSide){
+	    data.winner=authentication.currentUser().email;
+	}else if (data.cell3==userSide && data.cell5==userSide && data.cell7==userSide){
+	    data.winner=authentication.currentUser().email;
+	}else if(data.cell1!='' && data.cell2!='' && data.cell3!='' && data.cell4!='' && data.cell5!='' && data.cell6!='' && data.cell7!='' && data.cell8!='' && data.cell9!=''){
+	    data.winner = "Nobody";
+	}
+	
+	
+	if (data.xUserEmail == authentication.currentUser().email){
+	    data.userTurn = data.oUserEmail;
+	}else{
+	    data.userTurn = data.xUserEmail;
+	}
+	vm.game = data;
+        updateTicTac($http, data, id, authentication)
+	    .success(function(data) {
+                console.log("UPDATED");
+	    })                                                                           
+    }	
+	promise = $interval(function(){
+	    getTicTacByID($http, id)
+		.success(function(data) {
+		    console.log("success");
+		    vm.game = data;
+		})
+	}, 1000);
+	vm.stopGame = function(){
+	    console.log("STOPPING");
+	    $interval.cancel(promise);
+	}
+    }
+    vm.hasWinner = function(){
+	return vm.game.winner != '';
     }
 }]);
 app.controller('removeController', [ '$http', '$routeParams', '$location', 'authentication', function removeController($http, $routeParams, $location, authentication){
     var vm = this;
-    var id = $routeParams.blogid;
+    var id = $routeParams.tictacid;
 
     vm.isLoggedIn = function(){
 	return authentication.isLoggedIn();
     }
-    getBlogByID($http, id)
+    getTicTacByID($http, id)
         .success(function(data) {
 	    console.log("success");
-            vm.blog = data;
+            vm.game = data;
 	})
     vm.submit = function() {
-	deleteBlog($http, id, authentication)
+	deleteTicTac($http, id, authentication)
             .success(function(data) {
 		$location.path('/list').replace();
             })
@@ -176,21 +281,22 @@ app.controller('removeController', [ '$http', '$routeParams', '$location', 'auth
 
 app.controller('addController', ['$http', '$location', 'authentication', function addController($http, $location, authentication) {
     var vm = this;
-    vm.blog = {};
+    vm.tictac = {};
 
     vm.isLoggedIn = function(){
 	return authentication.isLoggedIn();
     }
     
     vm.submit = function(){
-	var data = vm.blog;
-	data.blogtitle = userForm.blogtitle.value;
-	data.blogtext = userForm.blogtext.value;
-	data.userName = authentication.currentUser().name;
-	data.userEmail = authentication.currentUser().email;
-	addBlog($http, data, authentication)
+	var data = vm.tictac;
+	data.xUserEmail = authentication.currentUser().email;
+	data.xUser = authentication.currentUser().name;
+	data.userTurn = data.xUserEmail;
+	
+	console.log("adding");
+	addTicTac($http, data, authentication)
 	    .success(function(data) {
-		$location.path('/list').replace();
+		$location.path('/game/'+data._id).replace();
 	    })
     }
 }]);
@@ -279,20 +385,24 @@ app.controller('RegisterController', [ '$http', '$location', 'authentication', f
 
 //*** REST Web API functions ***                                                          
 function getAllBlogs($http){
-    return $http.get('/api/blogs');
+    return $http.get('/api/tictac');
 }
 
-function addBlog($http, data, authentication) {
+/*function addBlog($http, data, authentication) {
     return $http.post('/api/blogs', data, { headers: {Authorization: 'Bearer '+ authentication.getToken()}});
+    }*/
+function addTicTac($http, data, authentication) {                                        
+    return $http.post('/api/tictac', data, { headers: {Authorization: 'Bearer '+ authentication.getToken()}});                                                     
 }
 
-function getBlogByID($http, blogid){
-    return $http.get('/api/blogs/'+ blogid);
+
+function getTicTacByID($http, tictacid){
+    return $http.get('/api/tictac/'+ tictacid);
 }
-function updateBlog($http, data, blogid, authentication) {
-    return $http.put('/api/blogs/'+ blogid, data, { headers: {Authorization: 'Bearer '+ authentication.getToken()}});
+function updateTicTac($http, data, tictacid, authentication) {
+    return $http.put('/api/tictac/'+ tictacid, data, { headers: {Authorization: 'Bearer '+ authentication.getToken()}});
 }
 
-function deleteBlog($http, blogid, authentication){
-    return $http.delete('/api/blogs/'+ blogid, { headers: {Authorization: 'Bearer '+ authentication.getToken()}});
+function deleteTicTac($http, tictacid, authentication){
+    return $http.delete('/api/tictac/'+ tictacid, { headers: {Authorization: 'Bearer '+ authentication.getToken()}});
 }

@@ -26,14 +26,14 @@
   <script type="text/ng-template" id="list.html">
     <h1>{{vm.listHeader}}</h1>
     <p></p>
-    <div ng-repeat="blog in vm.blogs">
+    <div ng-repeat="game in vm.games">
       <div class="card text-white bg-dark mb-3" style="width: 18rem;">
 	<div class="card-body">
-	  <h5 class="card-title">{{blog.blogtitle}}</h5>
-	  <p class="card-text">{{blog.blogtext}}</p>
-	  <h5 class="card-text" style="font-size: .67em">Published by {{blog.userName}} on {{blog.createdon}}</h5>
-	  <a ng-show="vm.isLoggedIn() && vm.isAuthor(blog)" href="#/remove/{{blog._id}}" class="btn btn-primary">Delete</a>
-	  <a ng-show="vm.isLoggedIn() && vm.isAuthor(blog)" href="#/edit/{{blog._id}}" class="btn btn-primary">Edit</a>
+	  <h5 class="card-title">{{game.xUser}} vs {{game.oUser}}</h5>
+	  <p ng-show="vm.game.winner != ''" class="card-text">Winner: {{game.winner}}</p>
+	  <h5 class="card-text" style="font-size: .67em">Created on {{game.playedOn}}</h5>
+	  <a ng-show="vm.isLoggedIn()" href="#/game/{{game._id}}" class="btn btn-primary">View Game</a>
+	  <a ng-show="vm.isLoggedIn() && vm.isAuthor(game)" href="#/remove/{{game._id}}"  class="btn btn-primary">Delete</a>
 	</div>
       </div>
     </div>
@@ -41,19 +41,35 @@
   
   <!--Add Page-->
   <script type="text/ng-template" id="add.html">
-    <p></p>
-    <div class="card text-white bg-dark mb-3" style="width: 50%">
       <form name="userForm" ng-submit="vm.submit()" ng-controller="addController" style="padding: 20px">
-	<div class="form-group">
-          <input class="form-control" id="blogtitle" name="blogtitle">
-          <textarea class="form-control" id="blogtext" name="blogtext" rows="3"></textarea>
-	</div>
-	<input type="submit" class="btn btn-primary" value="Add Blog">
+	<input type="submit" class="btn btn-primary" value="Start New Game">
       </form>
     </div>
   </script>
+
+  <!-- Game Page-->
+  <script type="text/ng-template" id="game.html">
+    <form name="gameForm" ng-submit="vm.submit()" ng-controller="gameController">
+      <h1 ng-show="vm.game.winner == ''">{{vm.game.xUser}} vs. {{vm.game.oUser}}</h1>
+      <h3>{{vm.game.userTurn}}'s Turn</h3>
+      <h5 ng-show="vm.game.winner != ''">{{vm.game.winner}} Wins!!!!</h5>
+      <button ng-show="(vm.game.oUser=='' && vm.getUserEmail() != vm.game.xUserEmail)" ng-click="vm.joinGame()" class="btn btn-default">Join Game</button>
+      <div class="grid-container">
+	<div class="grid-item" id="cell1" name="cell1" ng-click="vm.isUserTurn() && vm.clickedOn('1')">{{vm.game.cell1}}</div>
+	<div class="grid-item" id="cell2" name="cell2" ng-click="vm.isUserTurn() && vm.clickedOn('2')">{{vm.game.cell2}}</div>
+	<div class="grid-item" id="cell3" name="cell3" ng-click="vm.isUserTurn() && vm.clickedOn('3')">{{vm.game.cell3}}</div>
+	<div class="grid-item" id="cell4" name="cell4" ng-click="vm.isUserTurn() && vm.clickedOn('4')">{{vm.game.cell4}}</div>
+	<div class="grid-item" id="cell5" name="cell5" ng-click="vm.isUserTurn() && vm.clickedOn('5')">{{vm.game.cell5}}</div>
+	<div class="grid-item" id="cell6" name="cell6" ng-click="vm.isUserTurn() && vm.clickedOn('6')">{{vm.game.cell6}}</div>
+	<div class="grid-item" id="cell7" name="cell7" ng-click="vm.isUserTurn() && vm.clickedOn('7')">{{vm.game.cell7}}</div>
+	<div class="grid-item" id="cell8" name="cell8" ng-click="vm.isUserTurn() && vm.clickedOn('8')">{{vm.game.cell8}}</div>
+	<div class="grid-item" id="cell9" name="cell9" ng-click="vm.isUserTurn() && vm.clickedOn('9')">{{vm.game.cell9}}</div>
+      </div>
+      <a ng-click="vm.stopGame()" href="#/list" class="btn btn-primary">Leave Game</a>
+    </form>
+  </script>
   
-<!-- Edit Page -->
+<!-- Edit Page
 <script type="text/ng-template" id="edit.html">
   <p></p>
   <div class="card text-white bg-dark mb-3" style="width: 50%">  
@@ -65,17 +81,16 @@
       <input type="submit" class="btn btn-primary" value="Save Blog">
     </form> 
   </div>
-</script>
+</script>-->
 
 <script type="text/ng-template" id="remove.html">
   <p></p>
   <div class="card text-white bg-dark mb-3" style="width: 18rem">
     <form name="userForm" ng-submit="vm.submit()" ng-controller="removeController" style="padding: 20px">
       <div class="card-body">
-        <h5 class="card-title">{{vm.blog.blogtitle}}</h5>
-        <p class="card-text">{{vm.blog.blogtext}}</p>
+        <h5 class="card-title">{{vm.game.xUser}} vs {{vm.game.oUser}}</h5>
       </div>
-      <input type="submit" class="btn btn-primary" value="Delete Blog">
+      <input type="submit" class="btn btn-primary" value="Delete Game">
     </form>
   </div>
 </script>

@@ -94,3 +94,17 @@ i.glyphicon-trash{
     left:85%;
     top:30%;
 }
+div.grid-item{
+    text-align: center;
+    font-size: 125px;
+    border: 1px solid black;
+}
+div.grid-container {
+    display: grid;
+    grid-template-columns: 200px 200px 200px;
+    grid-template-rows: 200px 200px 200px;
+    padding: 10px;
+}
+div.grid-item:hover{
+    background-color: #808080;
+}
